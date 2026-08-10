@@ -1201,13 +1201,16 @@ const loginDist = [
   });
   svg.innerHTML = svgHtml;
   const tip = document.getElementById('chartTip');
+  const chartRel = svg.closest('.chartrel');
   svg.querySelectorAll('.bar-int').forEach(bar=>{
-    bar.addEventListener('mousemove', (e)=>{
+    bar.addEventListener('mouseenter', ()=>{
       tip.style.opacity=1;
       tip.innerHTML = `<b>${bar.dataset.l}</b><br>${parseInt(bar.dataset.v).toLocaleString('es-AR')} usuarios · ${bar.dataset.pct}%`;
-      const rect = svg.getBoundingClientRect();
-      tip.style.left = (e.clientX - rect.left - svg.parentElement.getBoundingClientRect().left + 200) + 'px';
-      tip.style.top = (e.clientY - rect.top - 10) + 'px';
+      const barRect = bar.getBoundingClientRect();
+      const relRect = chartRel.getBoundingClientRect();
+      tip.style.left = (barRect.left - relRect.left + barRect.width/2) + 'px';
+      tip.style.top = (barRect.top - relRect.top - 10) + 'px';
+      tip.style.transform = 'translate(-50%, -100%)';
     });
     bar.addEventListener('mouseleave', ()=> tip.style.opacity=0);
   });
