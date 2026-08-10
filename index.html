@@ -436,8 +436,9 @@ footer.pagefoot{padding:36px 40px 60px; text-align:center; color:var(--text-fain
 
         <div class="card">
           <h3><span class="ico">◎</span> ¿Para qué sirve?</h3>
-          <p>Define <b>la ventana de tiempo de registro (cohorte)</b> que se va a evaluar en el resto del módulo. La retención solo tiene sentido si ya pasó suficiente tiempo desde el registro — por eso los presets no muestran "los últimos N días", sino un bloque de N días que <b>terminó hace N días</b>.</p>
-          <p>Esto le da al bloque de registros el tiempo completo para acumular su D+1, D+7 y D+30 antes de medirlo.</p>
+          <p>Sirve para elegir <b>un grupo de usuarios según su período de registro</b> (a eso le llamamos "cohorte"). Ese grupo se usa en el resto del módulo para ver cuántos de ellos volvieron a la plataforma después de 1, 7 o 30 días.</p>
+          <p>El sistema siempre elige un período <b>que ya terminó</b>, nunca "los últimos N días". Así se asegura de que ya haya pasado tiempo suficiente para poder contar quién volvió al día 1, al día 7 y al día 30 — si tomara un grupo demasiado reciente, esos días todavía no habrían pasado y no habría nada que contar.</p>
+          <div class="callout tip"><span class="ico">💡</span><div><b>Ejemplo:</b> si seleccionamos <b>30G</b>, el sistema analiza a los usuarios que se registraron durante un período de 30 días que ya finalizó. Con eso, mide cuántos de esos usuarios regresaron al día 1, al día 7 y al día 30 después de haberse registrado.</div></div>
         </div>
 
         <div class="card">
@@ -466,11 +467,17 @@ footer.pagefoot{padding:36px 40px 60px; text-align:center; color:var(--text-fain
               <button class="pbtn" data-days="90">90G</button>
             </div>
             <div class="datebadge" id="cohortBadge">📅 Cohortes activas: 11 Jun – 11 Jul 2026</div>
-            <div class="callout tip"><span class="ico">💡</span><div>Prueba los botones: cada preset recalcula el rango con la misma fórmula real del CMS (fin = hoy − N días; inicio = fin − N días). El preset <b>30G</b> es el que se usa como referencia en los ejemplos de este manual.</div></div>
+
+            <div class="callout tip"><span class="ico">💡</span><div>
+              <b>Cómo se arma la fecha, paso a paso</b> (ejemplo con el preset 30G, tomando como "hoy" el 10/08/2026):
+              <ul style="margin-top:8px;">
+                <li><b>Fin de la cohorte</b> = hoy − 30 días → 10/08/2026 − 30 días = <b>11/07/2026</b></li>
+                <li><b>Inicio de la cohorte</b> = fin − 30 días → 11/07/2026 − 30 días = <b>11/06/2026</b></li>
+              </ul>
+              Resultado: la cohorte queda del <b>11/06/2026 al 11/07/2026</b> — exactamente lo que ves en el recuadro de arriba. Prueba los otros botones (7G, 14G, 60G, 90G): el sistema repite este mismo cálculo, solo cambiando el número de días.
+            </div></div>
           </div>
         </div>
-
-        <div class="callout warn"><span class="ico">⚠</span><div><b>Detalle de localización:</b> en versiones anteriores de esta pantalla, las etiquetas de cohorte aparecían como <span class="mono">"11 Giu – 14 Giu 2026"</span> ("Giu" = abreviatura italiana de junio) en vez de <span class="mono">"Jun"</span>. Vale la pena reportarlo como inconsistencia de localización si se repite.</div></div>
       </section>
 
       <!-- ============ S2 : RETENTION SUMMARY ============ -->
@@ -707,7 +714,8 @@ footer.pagefoot{padding:36px 40px 60px; text-align:center; color:var(--text-fain
 
         <div class="card">
           <h3><span class="ico">◎</span> ¿Para qué sirve?</h3>
-          <p>A diferencia de los puntos 01–03 (que trabajan sobre <b>cohortes de registro</b>), este bloque es un <b>filtro de fecha libre</b> que alimenta las 4 secciones siguientes (5a–5d) con el comportamiento general de la base en ese rango — sin importar cuándo se registraron los usuarios.</p>
+          <p>Es la diferencia clave con los puntos 01–03: ahí analizamos a los usuarios <b>según su fecha de registro</b>. Acá, en cambio, elegimos <b>un período de fechas</b> y miramos qué hicieron todos los usuarios durante esos días — sin importar cuándo se registraron.</p>
+          <div class="callout tip"><span class="ico">💡</span><div><b>Ejemplo:</b> si elijo el rango del <b>1 al 15 de julio</b>, veo el comportamiento de <b>todos</b> los usuarios que iniciaron sesión o apostaron en esos 15 días — tanto los que se registraron ese mismo mes como los que ya llevaban usando la plataforma desde hace un año. Este período alimenta las 4 secciones siguientes (5a–5d).</div></div>
         </div>
 
         <div class="shotwrap">
@@ -906,7 +914,7 @@ footer.pagefoot{padding:36px 40px 60px; text-align:center; color:var(--text-fain
         <div class="card">
           <details class="faqitem" open>
             <summary>¿En qué se diferencia "Retención por Cohorte" (03) de "Análisis Conductual" (05)?</summary>
-            <p>El punto 03 agrupa por <b>fecha de registro</b> del usuario (cohorte). El punto 05 en cambio filtra por <b>fecha del evento</b> (login, apuesta) sin importar cuándo se registró el usuario. Uno mide "¿cómo retienen los que se registraron esta semana?"; el otro mide "¿cómo se comportó toda la base en este rango de fechas?".</p>
+            <p>En el punto 03 miramos <b>cuándo se registró</b> el usuario y seguimos a ese grupo en el tiempo. En el punto 05 miramos <b>qué pasó en un rango de fechas</b>, sin importar cuándo se registró cada usuario. Una forma simple de recordarlo: el 03 responde "¿cómo les fue a los que se registraron esta semana?"; el 05 responde "¿qué hizo toda la base entre estas dos fechas?".</p>
           </details>
           <details class="faqitem">
             <summary>¿Por qué D60 y D90 muestran 0,0% en cohortes recientes?</summary>
